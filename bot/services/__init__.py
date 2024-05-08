@@ -21,7 +21,7 @@ async def check_username(update):
         await user.asave()
 
 async def get_or_create(user_id):
-    obj = await Bot_user.objects.get_or_create(user_id=user_id)
+    obj = await Bot_user.objects.aget_or_create(user_id=user_id)
     
 async def get_object_by_user_id(user_id):
     obj = await Bot_user.objects.aget(user_id=user_id)
