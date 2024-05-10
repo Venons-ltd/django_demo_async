@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
+    'app.apps.app',
     'bot.apps.bot',
     'jazzmin',
     'django.contrib.admin',
