@@ -27,7 +27,7 @@ SECRET_KEY = SECRET_KEY
 DEBUG = DEBUG
 
 ALLOWED_HOSTS = ALLOWED_HOSTS
-
+CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS
 
 # Application definition
 
@@ -35,23 +35,30 @@ INSTALLED_APPS = [
     'app.apps.app',
     'bot.apps.bot',
     'jazzmin',
+    'django_apscheduler',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'core.urls'
 
@@ -140,8 +147,12 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL = "/static/"
-MEDIA_URL = "/files/"
+if DEBUG:
+    STATIC_URL = "/static/"
+    MEDIA_URL = "/files/"
+else:
+    STATIC_URL = f"{CSRF_TRUSTED_ORIGINS[0]}/static/"
+    MEDIA_URL = f"{CSRF_TRUSTED_ORIGINS[0]}/files/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "files")
 
 # Default primary key field type
