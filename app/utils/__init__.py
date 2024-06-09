@@ -25,11 +25,11 @@ async def today():
 async def send_request(url, data=None, headers=None, type='get'):
     if type == 'get':
         response = requests.get(url, params=data, headers=headers)
-        content = await json.loads(response.content)
+        content = json.loads(response.content)
         headers = response.headers
     else:
         response = requests.post(url, json=data, headers=headers)
-        content = await json.loads(response.content)
+        content = json.loads(response.content)
         headers = response.headers
 
     return content, headers
