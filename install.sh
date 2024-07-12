@@ -30,15 +30,15 @@ sed -i "s/<domain>/$domain/g" ".env"
 
 createdb $project_title
 
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 
-python3 manage.py migrate
-python3 manage.py makemigrations app
-python3 manage.py makemigrations bot
-python3 manage.py migrate app
-python3 manage.py migrate bot
-python3 manage.py collectstatic
-python3 manage.py createsuperuser
+python manage.py migrate
+python manage.py makemigrations app
+python manage.py makemigrations bot
+python manage.py migrate app
+python manage.py migrate bot
+python manage.py collectstatic
+python manage.py createsuperuser
 
 touch $project_title
 sed -i "s/<title>/$project_title/g" "conf/supervisor.conf"
