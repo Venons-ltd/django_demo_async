@@ -1,5 +1,6 @@
 from bot.models import *
 from asgiref.sync import sync_to_async
+from telegram import Update
 
 @sync_to_async
 def is_registered(id):
@@ -8,8 +9,8 @@ def is_registered(id):
     else:
         return False
 
-async def get_user_by_update(update):
-    user = await Bot_user.objects.aget(user_id=update.message.chat.id)
+async def get_user_by_update(update: Update):
+    user = await Bot_user.objects.aget(user_id=update.effective_user.id)
     return user
 
 async def check_username(update):
@@ -29,6 +30,6 @@ async def get_object_by_user_id(user_id):
     obj = await Bot_user.objects.aget(user_id=user_id)
     return obj
 
-async def get_object_by_update(update):
-    obj = await Bot_user.objects.aget(user_id=update.message.chat.id)
+async def get_object_by_update(update: Update):
+    obj = await Bot_user.objects.aget(user_id=update.effective_user.id)
     return obj
