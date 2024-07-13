@@ -9,6 +9,7 @@ from bot.resources.strings import lang_dict
 from bot.services import *
 from bot.services.language_service import *
 from bot.resources.conversationList import *
+from app.services import filter_objects_sync
 from config import WEBAPP_URL
 
 @dataclass
