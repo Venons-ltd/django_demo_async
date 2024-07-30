@@ -27,6 +27,7 @@ sed -i "s/<db_user>/$db_user/g" ".env"
 sed -i "s/<db_password>/$db_password/g" ".env"
 sed -i "s/<bot_token>/$bot_token/g" ".env"
 sed -i "s/<domain>/$domain/g" ".env"
+sed -i "s/<csrf_trusted_origins>/$domain/g" ".env"
 
 createdb $project_title
 
