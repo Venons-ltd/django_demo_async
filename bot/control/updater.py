@@ -11,6 +11,7 @@ from telegram.ext import (
 from telegram import Update
 from config import BOT_API_TOKEN, WEBHOOK_URL
 from bot.control.handlers import handlers
+from bot.bot.main import error_handler
 
 
 @dataclass
@@ -37,6 +38,7 @@ application = Application.builder().token(BOT_API_TOKEN).context_types(context_t
 for handler in handlers[::-1]:
     application.add_handler(handler)
 
+application.add_error_handler(error_handler)
 
 ### webhook functions
 async def set_webhook():
