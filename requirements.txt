@@ -50,3 +50,4 @@ virtualenv==20.26.2
 wcwidth==0.2.13
 zope.event==5.0
 zope.interface==6.3
+watchdog==5.0.0
