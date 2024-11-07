@@ -1,3 +1,4 @@
+from bot import *
 from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext, ExtBot, Application
 from dataclasses import dataclass
@@ -12,29 +13,13 @@ from bot.resources.conversationList import *
 from app.services import filter_objects_sync
 from config import WEBAPP_URL
 
-@dataclass
-class WebhookUpdate:
-    """Simple dataclass to wrap a custom update type"""
-    user_id: int
-    payload: str
-
-class CustomContext(CallbackContext[ExtBot, dict, dict, dict]):
-    @classmethod
-    def from_update(
-        cls,
-        update: object,
-        application: "Application",
-    ) -> "CustomContext":
-        if isinstance(update, WebhookUpdate):
-            return cls(application=application, user_id=update.user_id)
-        return super().from_update(update, application)
-
 
 async def is_message_back(update: Update):
     if update.message.text == await get_word("back", update):
         return True
     else:
         return False
+
 
 async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     update = update.callback_query if update.callback_query else update
@@ -48,7 +33,8 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [buy_car_button],
     ]
 
-    reply_markup = ReplyKeyboardMarkup(keyboard=keyboards, resize_keyboard=True)
+    reply_markup = ReplyKeyboardMarkup(
+        keyboard=keyboards, resize_keyboard=True)
     await bot.send_message(
         update.message.chat_id,
         await get_word('main menu', update),

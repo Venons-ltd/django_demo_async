@@ -1,18 +1,21 @@
 from bot.models import Message, Bot_user
-from bot.utils.bot_functions import send_newsletter, bot
-from asgiref.sync import async_to_sync
+from bot.control.updater import application
+from bot import NewsletterUpdate
+from django.conf import settings
 
-def send_message():
-    for message in Message.objects.filter(is_sent=False):
+
+async def send_message():
+    async for message in Message.objects.filter(is_sent=False):
         # save message as sent
         message.is_sent = True
         message.save()
         # get users
-        users = message.bot_users.all() or Bot_user.objects.all()
-        for user in users:
-            async_to_sync(send_newsletter)(
-                bot, user.user_id, message.text, 
-                message.photo.open() if message.photo else None, 
-                message.video.open() if message.video else None, 
-                message.file.open() if message.file else None
-                )
+        users = Bot_user.objects.all().values_list('user_id', flat=True)
+        async for user_id in users:
+            await application.update_queue.put(NewsletterUpdate(
+                user_id=int(user_id),
+                text=message.text,
+                photo=f"{settings.MEDIA_URL}/{message.photo.name}" if message.photo else None,
+                video=f"{settings.MEDIA_URL}/{message.video.name}" if message.video else None,
+                document=f"{settings.MEDIA_URL}/{message.file.name}" if message.file else None
+            ))

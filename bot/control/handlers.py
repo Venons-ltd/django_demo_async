@@ -1,3 +1,4 @@
+from bot import *
 from telegram.ext import (
     CommandHandler,
     MessageHandler,
@@ -20,5 +21,6 @@ exceptions_for_filter_text = (~filters.COMMAND) & (~filters.Text(lang_dict['main
 start = CommandHandler('start', main.start)
 
 handlers = [
-    start
+    start,
+    TypeHandler(type=NewsletterUpdate, callback=main.newsletter_update)
 ]
