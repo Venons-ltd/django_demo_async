@@ -33,7 +33,7 @@ createdb $project_title
 
 pip install -r requirements.txt
 
-python manage.py migrate
+python manage.py migrate --skip-checks
 python manage.py makemigrations app
 python manage.py makemigrations bot
 python manage.py migrate app
