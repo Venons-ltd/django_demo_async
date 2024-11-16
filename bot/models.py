@@ -7,7 +7,11 @@ class Bot_user(models.Model):
     username = models.CharField(null=True, blank=True, max_length=256, verbose_name='username')
     firstname = models.CharField(null=True, blank=True, max_length=256, verbose_name='Никнейм')
     phone = models.CharField(null=True, blank=True, max_length=16, default='', verbose_name='Телефон')
-    lang = models.CharField(null=True, blank=True, max_length=4, verbose_name='')
+    LANG_CHOICES = [
+        (0, 'uz'),
+        (1, 'ru'),
+    ]
+    lang = models.IntegerField(null=True, blank=True, choices=LANG_CHOICES, default=0, verbose_name='Язык')
     date = models.DateTimeField(db_index=True, null=True, auto_now_add=True, blank=True, verbose_name='Дата регистрации')
 
     def __str__(self) -> str:

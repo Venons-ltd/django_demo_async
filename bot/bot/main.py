@@ -5,8 +5,9 @@ import traceback
 import html
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(update.message.chat_id, 'Hello')
+async def start(update: Update, context: CustomContext):
+    text = context.words.hello
+    await context.bot.send_message(update.message.chat_id, text)
     await context.application.update_queue.put(NewsletterUpdate(
         user_id=context._user_id, text="lalalalalalalal"
     ))
