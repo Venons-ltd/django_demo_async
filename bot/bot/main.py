@@ -6,7 +6,7 @@ import html
 
 
 async def start(update: Update, context: CustomContext):
-    text = context.words.hello
+    text = context.words.main_menu
     await context.bot.send_message(update.message.chat_id, text)
     await context.application.update_queue.put(NewsletterUpdate(
         user_id=context._user_id, text="lalalalalalalal"
@@ -23,7 +23,7 @@ async def newsletter_update(update: NewsletterUpdate, context: CustomContext):
             reply_markup=update.reply_markup,
             parse_mode=ParseMode.HTML
         )
-    
+
     if update.photo:
         # send photo
         message = await bot.send_photo(
@@ -31,7 +31,7 @@ async def newsletter_update(update: NewsletterUpdate, context: CustomContext):
             update.photo,
             caption=update.text,
             reply_markup=update.reply_markup,
-            parse_mode = ParseMode.HTML,
+            parse_mode=ParseMode.HTML,
         )
     if update.video:
         # send video
@@ -40,7 +40,7 @@ async def newsletter_update(update: NewsletterUpdate, context: CustomContext):
             update.video,
             caption=update.text,
             reply_markup=update.reply_markup,
-            parse_mode = ParseMode.HTML,
+            parse_mode=ParseMode.HTML,
         )
     if update.document:
         # send document
@@ -49,7 +49,7 @@ async def newsletter_update(update: NewsletterUpdate, context: CustomContext):
             update.document,
             caption=update.text,
             reply_markup=update.reply_markup,
-            parse_mode = ParseMode.HTML,
+            parse_mode=ParseMode.HTML,
         )
     if update.pin_message:
         await bot.pin_chat_message(chat_id=update.user_id, message_id=message.message_id)

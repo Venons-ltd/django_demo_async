@@ -1,4 +1,18 @@
+
+
 class Strings:
+    def __init__(self, user_id) -> None:
+        self.user_id = user_id
+
+    def __getattribute__(self, key: str):
+        from bot.services.redis_service import get_user_lang
+        user_id = object.__getattribute__(self, "user_id")
+        user_lang_code = get_user_lang(user_id)
+        if result := object.__getattribute__(self, key):
+            return result[user_lang_code]
+        else:
+            return key
+
     hello = """🤖 Xush kelibsiz!\n Bot tilini tanlang  🌎 \n\n ➖➖➖➖➖➖➖➖➖➖➖➖\n
     👋 Добро пожаловать \n \U0001F1FA\U0001F1FF Выберите язык бота \U0001F1F7\U0001F1FA"""
     added_group = "Чат успешно добавлена ✅"
