@@ -8,7 +8,7 @@ async def send_message():
     async for message in Message.objects.filter(is_sent=False):
         # save message as sent
         message.is_sent = True
-        message.save()
+        await message.asave()
         # get users
         users = Bot_user.objects.all().values_list('user_id', flat=True)
         async for user_id in users:
