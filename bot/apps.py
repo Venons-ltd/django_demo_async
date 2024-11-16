@@ -6,6 +6,7 @@ class bot(AppConfig):
     name = 'bot'
 
     def ready(self):
+        import bot.signals
         # save bot user lang codes to redis
         from bot.services.redis_service import save_langs_to_redis
         save_langs_to_redis()

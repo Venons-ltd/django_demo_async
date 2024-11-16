@@ -31,6 +31,11 @@ def save_langs_to_redis():
         print("Redis is not empty. No action taken.")
 
 
+def set_user_lang(user_id, lang):
+    redis_key = f"user_lang:{user_id}"
+    redis_client.set(redis_key, lang)
+
+
 def get_user_lang(user_id):
     # Construct the Redis key
     redis_key = f"user_lang:{user_id}"
