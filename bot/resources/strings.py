@@ -5,11 +5,14 @@ class Strings:
         self.user_id = user_id
 
     def __getattribute__(self, key: str):
-        from bot.services.redis_service import get_user_lang
-        user_id = object.__getattribute__(self, "user_id")
-        user_lang_code = get_user_lang(user_id)
         if result := object.__getattribute__(self, key):
-            return result[user_lang_code]
+            if isinstance(result, list):
+                from bot.services.redis_service import get_user_lang
+                user_id = object.__getattribute__(self, "user_id")
+                user_lang_code = get_user_lang(user_id)
+                return result[user_lang_code]
+            else:
+                return result
         else:
             return key
 
