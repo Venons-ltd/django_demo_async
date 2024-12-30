@@ -2,22 +2,23 @@ import redis
 from bot.models import Bot_user
 from django.db.models import F, Value, CharField
 from django.db.models.functions import Concat
+from config import BOT_API_TOKEN
 
 # Initialize Redis connection
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=13)
 
 
 def save_langs_to_redis():
     """
     Save all Bot_user langs to Redis by user_id if Redis is empty.
     """
-    user_lang_keys_exist = any(redis_client.scan_iter(match="user_lang:*"))
+    user_lang_keys_exist = any(redis_client.scan_iter(match=f"{BOT_API_TOKEN}:user_lang:*"))
     # Check if Redis is empty
     if not user_lang_keys_exist:
         # Create a dictionary of user_id: lang
         user_langs = dict(
             Bot_user.objects.filter(user_id__isnull=False).annotate(
-                redis_key=Concat(Value("user_lang:"), F(
+                redis_key=Concat(Value(f"{BOT_API_TOKEN}:user_lang:"), F(
                     "user_id"), output_field=CharField())
             ).values_list("redis_key", "lang")
         )
@@ -32,13 +33,13 @@ def save_langs_to_redis():
 
 
 def set_user_lang(user_id, lang):
-    redis_key = f"user_lang:{user_id}"
+    redis_key = f"{BOT_API_TOKEN}:user_lang:{user_id}"
     redis_client.set(redis_key, lang)
 
 
 def get_user_lang(user_id):
     # Construct the Redis key
-    redis_key = f"user_lang:{user_id}"
+    redis_key = f"{BOT_API_TOKEN}:user_lang:{user_id}"
 
     # Get the value from Redis
     lang = redis_client.get(redis_key)
