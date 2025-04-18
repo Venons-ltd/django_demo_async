@@ -6,8 +6,6 @@ echo "Project title:"
 read project_title
 echo "User: "
 read user
-echo "Secret key: "
-read secret_key
 echo "Database user: "
 read db_user
 echo "Database password"
@@ -18,6 +16,8 @@ echo "Project port"
 read port
 echo "Project domain"
 read domain
+
+secret_key=$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')
 
 cp conf/env .env
 sed -i "s/<port>/$port/g" ".env"
