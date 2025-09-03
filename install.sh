@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -e
+
+pip install -r requirements.txt
+
 mkdir logs
 
 echo "Project title:"
@@ -14,6 +18,8 @@ echo "Bot token: "
 read bot_token
 echo "Project port"
 read port
+echo "Bot port"
+read bot_port
 echo "Project domain"
 read domain
 
@@ -21,6 +27,7 @@ secret_key=$(python -c 'from django.core.management.utils import get_random_secr
 
 cp conf/env .env
 sed -i "s/<port>/$port/g" ".env"
+sed -i "s/<bot_port>/$bot_port/g" ".env"
 sed -i "s/<secret_key>/$secret_key/g" ".env"
 sed -i "s/<db_name>/$project_title/g" ".env"
 sed -i "s/<db_user>/$db_user/g" ".env"
@@ -31,7 +38,6 @@ sed -i "s/<csrf_trusted_origins>/$domain/g" ".env"
 
 createdb $project_title
 
-pip install -r requirements.txt
 
 python manage.py migrate --skip-checks
 python manage.py makemigrations app
@@ -45,14 +51,21 @@ touch $project_title
 sed -i "s/<title>/$project_title/g" "conf/supervisor.conf"
 sed -i "s/<folder>/$project_title/g" "conf/supervisor.conf"
 sed -i "s/<user>/$user/g" "conf/supervisor.conf"
+sed -i "s/<port>/$port/g" "conf/supervisor.conf"
+sed -i "s/<bot_port>/$bot_port/g" "conf/supervisor.conf"
 sudo cp conf/supervisor.conf /etc/supervisor/conf.d/$project_title.conf
 sudo supervisorctl reread
 sudo supervisorctl update
+
+sed -i "s/<project_title>/$project_title/g" "conf/restart.sh"
+cp conf/restart.sh .
 
 sed -i "s/<domain>/$domain/g" "conf/nginx.conf"
 sed -i "s/<user>/$user/g" "conf/nginx.conf"
 sed -i "s/<folder>/$project_title/g" "conf/nginx.conf"
 sed -i "s/<port>/$port/g" "conf/nginx.conf"
+sed -i "s/<bot_port>/$bot_port/g" "conf/nginx.conf"
+sed -i "s/<bot_token>/$bot_token/g" "conf/nginx.conf"
 sudo cp conf/nginx.conf /etc/nginx/sites-enabled/$project_title.conf
 sudo nginx -t
 echo "Continue?"
