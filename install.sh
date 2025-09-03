@@ -67,6 +67,13 @@ sed -i "s/<port>/$port/g" "conf/nginx.conf"
 sed -i "s/<bot_port>/$bot_port/g" "conf/nginx.conf"
 sed -i "s/<bot_token>/$bot_token/g" "conf/nginx.conf"
 sudo cp conf/nginx.conf /etc/nginx/sites-enabled/$project_title.conf
+
+# give access to nginx to the project folder staticfiles
+chmod o+x /home/$user
+chmod o+x /home/$user/$project_title
+chmod -R o+r /home/$user/$project_title/staticfiles
+chmod -R o+X /home/$user/$project_title/staticfiles
+
 sudo nginx -t
 echo "Continue?"
 read qwerty
