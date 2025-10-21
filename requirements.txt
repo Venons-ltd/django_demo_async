@@ -13,7 +13,6 @@ autopep8==2.3.1
 billiard==4.2.0
 celery==5.4.0
 certifi==2024.2.2
-celery==5.4.0
 channels==4.1.0
 charset-normalizer==3.3.2
 click==8.1.7
@@ -22,7 +21,7 @@ click-plugins==1.1.1
 click-repl==0.3.0
 decorator==5.1.1
 distlib==0.3.8
-Django>="4.2,<4.3"
+Django==5.2.7
 django-apscheduler==0.6.2
 django-cors-headers==4.3.1
 django-jazzmin==3.0.0
@@ -57,7 +56,7 @@ pycodestyle==2.12.1
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
-python-telegram-bot~=21.1
+python-telegram-bot==22.5
 pytz==2024.1
 redis==5.0.4
 requests==2.31.0
