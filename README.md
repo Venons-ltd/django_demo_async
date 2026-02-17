@@ -17,8 +17,17 @@ A demo project using Django, including Telegram bot integration with options to 
 
 ### Server Installation
 
-1. **Run the installation script:**
+1. **Run the server setup script (If needed):**
+
    ```bash
+   bash setup.sh
+   ```
+   
+2. **Run the installation script:**
+   
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
    bash install.sh
    ```
 
