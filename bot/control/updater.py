@@ -9,17 +9,24 @@ from telegram.ext import (
     TypeHandler,
     PicklePersistence
 )
+from telegram.request import HTTPXRequest
 from telegram import Update
 from config import BOT_API_TOKEN, WEBHOOK_URL
 from bot.control.handlers import handlers
 from bot.bot.main import error_handler
 from bot import *
 
-
+request = HTTPXRequest(
+    connect_timeout=30,
+    read_timeout=30,
+    write_timeout=30,
+    connection_pool_size=20,
+    pool_timeout=30
+)
 persistence = PicklePersistence(filepath="persistencebot")
 context_types = ContextTypes(context=CustomContext)
 application = Application.builder().token(
-    BOT_API_TOKEN).context_types(context_types).build()
+    BOT_API_TOKEN).context_types(context_types).request(request).build()
 
 # add handlers
 for handler in handlers[::-1]:
