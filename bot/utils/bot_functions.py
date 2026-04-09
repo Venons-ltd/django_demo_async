@@ -10,55 +10,78 @@ from telegram import (
     ReplyKeyboardRemove,
     Bot,
     Update,
-    WebAppInfo
+    WebAppInfo,
 )
 from telegram.constants import (
-    ParseMode, 
+    ParseMode,
     ChatAction,
 )
-from telegram.ext import (
-    ConversationHandler,
-    ContextTypes,
-    Application
-)
+from telegram.ext import ConversationHandler, ContextTypes, Application
 from uuid import uuid4
 from config import BOT_API_TOKEN
 
 application = Application.builder().token(BOT_API_TOKEN).build()
 bot = application.bot
 
-async def update_message_reply_text(update: Update, text, reply_markup=None, disable_web_page_preview = True):
+
+async def update_message_reply_text(
+    update: Update, text, reply_markup=None, disable_web_page_preview=True
+):
     message = await update.effective_message.reply_text(
         text,
         reply_markup=reply_markup,
-        parse_mode = ParseMode.HTML,
-        disable_web_page_preview = disable_web_page_preview,
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=disable_web_page_preview,
     )
     return message
 
-async def bot_send_message(update: Update, context: ContextTypes.DEFAULT_TYPE, text, reply_markup=None, disable_web_page_preview = True):
+
+async def bot_send_message(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    text,
+    reply_markup=None,
+    disable_web_page_preview=True,
+):
     bot = context.bot
     message = await bot.send_message(
-        update.effective_chat.id, 
+        update.effective_chat.id,
         text,
         reply_markup=reply_markup,
-        parse_mode = ParseMode.HTML,
-        disable_web_page_preview = disable_web_page_preview,
-        )
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=disable_web_page_preview,
+    )
     return message
 
-async def bot_send_document(update: Update, context: ContextTypes.DEFAULT_TYPE, document, reply_markup=None, caption=None):
+
+async def bot_send_document(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    document,
+    reply_markup=None,
+    caption=None,
+):
     bot = context.bot
     message = await bot.send_document(
         update.effective_chat.id,
         document,
         caption=caption,
         reply_markup=reply_markup,
-        parse_mode = ParseMode.HTML,
+        parse_mode=ParseMode.HTML,
     )
     return message
 
-async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, document=None, reply_markup=None, pin_message=False):
+
+async def send_newsletter(
+    bot: Bot,
+    chat_id,
+    text,
+    photo=None,
+    video=None,
+    document=None,
+    reply_markup=None,
+    pin_message=False,
+):
     try:
         if not (photo or video or document):
             # send text message
@@ -66,9 +89,9 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
                 chat_id=chat_id,
                 text=text,
                 reply_markup=reply_markup,
-                parse_mode=ParseMode.HTML
+                parse_mode=ParseMode.HTML,
             )
-        
+
         if photo:
             # send photo
             message = await bot.send_photo(
@@ -76,7 +99,7 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
                 photo,
                 caption=text,
                 reply_markup=reply_markup,
-                parse_mode = ParseMode.HTML,
+                parse_mode=ParseMode.HTML,
             )
 
         if video:
@@ -86,7 +109,7 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
                 video,
                 caption=text,
                 reply_markup=reply_markup,
-                parse_mode = ParseMode.HTML,
+                parse_mode=ParseMode.HTML,
             )
         if document:
             # send document
@@ -95,7 +118,7 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
                 document,
                 caption=text,
                 reply_markup=reply_markup,
-                parse_mode = ParseMode.HTML,
+                parse_mode=ParseMode.HTML,
             )
 
         if pin_message:
@@ -104,7 +127,10 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
     except:
         return None
 
-async def bot_delete_message(update: Update, context: ContextTypes.DEFAULT_TYPE, message_id=None):
+
+async def bot_delete_message(
+    update: Update, context: ContextTypes.DEFAULT_TYPE, message_id=None
+):
     if not message_id:
         message_id = update.effective_message.message_id
     bot = context.bot
@@ -113,45 +139,56 @@ async def bot_delete_message(update: Update, context: ContextTypes.DEFAULT_TYPE,
     except:
         return
 
-async def bot_send_and_delete_message(update: Update, context: ContextTypes.DEFAULT_TYPE, text, reply_markup=None):
+
+async def bot_send_and_delete_message(
+    update: Update, context: ContextTypes.DEFAULT_TYPE, text, reply_markup=None
+):
     bot = context.bot
     message = await bot.send_message(
-        update.effective_chat.id, 
+        update.effective_chat.id,
         text,
         reply_markup=reply_markup,
-        parse_mode = ParseMode.HTML
-        )
+        parse_mode=ParseMode.HTML,
+    )
     await bot.delete_message(update.effective_chat.id, message.message_id)
     return
 
-async def bot_edit_message_text(update: Update, context: ContextTypes.DEFAULT_TYPE, text, msg_id=None):
+
+async def bot_edit_message_text(
+    update: Update, context: ContextTypes.DEFAULT_TYPE, text, msg_id=None
+):
     bot = context.bot
     if not msg_id:
         msg_id = update.effective_message.message_id
     await bot.edit_message_text(
         chat_id=update.effective_chat.id,
         message_id=msg_id,
-        text=text, 
-        parse_mode=ParseMode.HTML
+        text=text,
+        parse_mode=ParseMode.HTML,
     )
 
-async def bot_edit_message_reply_markup(update: Update, context: ContextTypes.DEFAULT_TYPE, msg_id=None, reply_markup=None):
+
+async def bot_edit_message_reply_markup(
+    update: Update, context: ContextTypes.DEFAULT_TYPE, msg_id=None, reply_markup=None
+):
     bot = context.bot
     if not msg_id:
         msg_id = update.effective_message.message_id
     await bot.edit_message_reply_markup(
-        chat_id=update.effective_chat.id,
-        message_id=msg_id,
-        reply_markup=reply_markup
+        chat_id=update.effective_chat.id, message_id=msg_id, reply_markup=reply_markup
     )
 
-async def reply_keyboard_markup(keyboard=[], resize_keyboard=True, one_time_keyboard=False):
+
+async def reply_keyboard_markup(
+    keyboard=[], resize_keyboard=True, one_time_keyboard=False
+):
     markup = ReplyKeyboardMarkup(
         keyboard=keyboard,
         resize_keyboard=resize_keyboard,
-        one_time_keyboard=one_time_keyboard
+        one_time_keyboard=one_time_keyboard,
     )
     return markup
+
 
 async def reply_keyboard_remove():
     markup = ReplyKeyboardRemove(True)
@@ -161,31 +198,49 @@ async def reply_keyboard_remove():
 async def inlinequeryresultarticle(title, description=None, title_id=None):
     message_content = title
     if title_id:
-        message_content = '{}<>?{}'.format(title, title_id)
+        message_content = "{}<>?{}".format(title, title_id)
 
     article = InlineQueryResultArticle(
         id=str(uuid4()),
         title=title,
-        description = description,
+        description=description,
         input_message_content=InputTextMessageContent(message_content),
     )
     return article
 
+
 async def update_inline_query_answer(update: Update, article):
     await update.inline_query.answer(article, auto_pagination=True, cache_time=120)
 
-async def bot_answer_callback_query(update: Update, context: ContextTypes.DEFAULT_TYPE, text, show_alert=True):
-    bot = context.bot
-    await bot.answer_callback_query(callback_query_id=update.id, text=text, show_alert=show_alert)
 
-async def bot_send_chat_action(update: Update, context: ContextTypes.DEFAULT_TYPE, chat_action=ChatAction.TYPING):
+async def bot_answer_callback_query(
+    update: Update, context: ContextTypes.DEFAULT_TYPE, text, show_alert=True
+):
+    bot = context.bot
+    await bot.answer_callback_query(
+        callback_query_id=update.id, text=text, show_alert=show_alert
+    )
+
+
+async def bot_send_chat_action(
+    update: Update, context: ContextTypes.DEFAULT_TYPE, chat_action=ChatAction.TYPING
+):
     bot = context.bot
     await bot.sendChatAction(update.effective_chat.id, chat_action)
+
 
 async def send_media_group(bot: Bot, chat_id, photos):
 
     all = [InputMediaPhoto(photo.file) for photo in photos.all()]
     try:
-        await bot.send_media_group(chat_id = chat_id, media = all)
+        await bot.send_media_group(chat_id=chat_id, media=all)
     except:
-        w=0
+        w = 0
+
+
+async def change_conversation_state(
+    context: ContextTypes.DEFAULT_TYPE, conv_name: str, new_state: int
+) -> None:
+    user_key = (context._user_id, context._user_id)
+    await context.application.persistence.update_conversation(conv_name, user_key, new_state)  # type: ignore
+    return

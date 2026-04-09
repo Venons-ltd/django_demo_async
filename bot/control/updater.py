@@ -23,10 +23,11 @@ request = HTTPXRequest(
     connection_pool_size=20,
     pool_timeout=30
 )
-persistence = PicklePersistence(filepath="persistencebot")
+# persistence = PicklePersistence(filepath="persistencebot")
+persistence = RedisPersistence()
 context_types = ContextTypes(context=CustomContext)
 application = Application.builder().token(
-    BOT_API_TOKEN).context_types(context_types).request(request).build()
+    BOT_API_TOKEN).persistence(persistence).context_types(context_types).request(request).build()
 
 # add handlers
 for handler in handlers[::-1]:
