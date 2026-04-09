@@ -1,2 +1,2 @@
-from bot.services.language_service import *
-
+from bot import *
+from app.resources.classes import *

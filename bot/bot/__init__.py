@@ -8,7 +8,8 @@ from bot.utils.bot_functions import *
 from bot.utils.keyboards import *
 from bot.services import *
 from bot.resources.conversationList import *
-from app.services import filter_objects_sync
+from app.resources.classes import *
+from bot.services.string_service import *
 from config import WEBAPP_URL
 
 
