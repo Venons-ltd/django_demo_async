@@ -209,7 +209,7 @@ CELERY_BROKER_URL = "redis://localhost:6379"
 
 UNFOLD = {
     "SHOW_LANGUAGES": True,
-    "SITE_TITLE": "Custom suffix in <title> tag",
+    "SITE_TITLE": "Project title Admin",
     "SITE_HEADER": "Admin",
     "SITE_SUBHEADER": "Project title",
     # "SITE_DROPDOWN": [
@@ -246,7 +246,7 @@ UNFOLD = {
     # "ENVIRONMENT": "app.environment_callback", # environment name in header
     # "ENVIRONMENT_TITLE_PREFIX": "app.environment_title_prefix_callback", # environment name prefix in title tag
     # "DASHBOARD_CALLBACK": "app.dashboard_callback",
-    "THEME": "light", # Force theme: "dark" or "light". Will disable theme switcher
+    # "THEME": "dark", # Force theme: "dark" or "light". Will disable theme switcher
     "LOGIN": {
         "image": lambda request: static("sample/login-bg.jpg"),
         "redirect_after": lambda request: reverse_lazy("admin:APP_MODEL_changelist"),
@@ -296,15 +296,15 @@ UNFOLD = {
             "important-dark": "var(--color-base-100)",  # text-base-100
         },
     },
-    # "EXTENSIONS": {
-    #     "modeltranslation": {
-    #         "flags": {
-    #             "en": "🇬🇧",
-    #             "fr": "🇫🇷",
-    #             "nl": "🇧🇪",
-    #         },
-    #     },
-    # },
+    "EXTENSIONS": {
+        "modeltranslation": {
+            "flags": {
+                "en": "🇬🇧",
+                "fr": "🇫🇷",
+                "nl": "🇧🇪",
+            },
+        },
+    },
     "SIDEBAR": {
         "show_search": False,  # Search in applications and models names
         "command_search": False,  # Replace the sidebar search with the command search
@@ -313,7 +313,7 @@ UNFOLD = {
             {
                 "title": _("Navigation"),
                 "separator": True,  # Top border
-                "collapsible": True,  # Collapsible group of links
+                "collapsible": False,  # Collapsible group of links
                 "items": [
                     {
                         "title": _("Dashboard"),
